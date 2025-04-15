@@ -1,12 +1,30 @@
-# React + Vite
+# About BoloToh 💬✨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**BoloToh** is a fun and creative web app where your words turn into magic!
 
-Currently, two official plugins are available:
+Just share a few things about yourself — like your **name**, **age**, **favorite color**, or your **mood** — and BoloToh will create a personalized:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📝 **Poem**
+- 📖 **Story**
+- 🔥 **Roast**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🎯 Your Style, Your Rules
+
+You get to choose:
+
+- The **type** of content you want  
+- The **language** (Urdu or English)  
+- The **tone** (funny, romantic, emotional, random, etc.)
+
+And BoloToh will generate something unique, fun, and made just for you!
+
+---
+
+## 🌟 Why BoloToh?
+
+Whether you're feeling silly, sweet, or just want something random —  
+**BoloToh** is here to turn your data into something memorable and share-worthy!
+
+> It’s like having a personal Urdu/English AI poet and storyteller — ready to roast or rhyme anytime you want 😉
