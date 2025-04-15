@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap');
+
+.poem-container {
+    font-family: "Noto Nastaliq Urdu", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    line-gap-override: 5;
+    animation: appear 1s ease-in-out;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+nav {
+    border-radius: 0 0 40px 40px;
+    outline: 2px solid #0044ff;
+    outline-offset: 5px;
+}
+
+.footer {
+    border-radius: 40px 40px 0 0;
+    outline: 2px solid #0044ff;
+    outline-offset: 5px;
+}
+
+.glow {
+    animation: glow-animation 5s ease-in-out infinite alternate;
+}
+
+@keyframes glow-animation {
+    from {
+        box-shadow:
+            0 0 10px #ffffff,
+            0 0 10px #ffffff;
+    }
+    to {
+        box-shadow:
+            0 0 5px #5b85fa,
+            0 0 5px #5b85fa
+    }
+}
+
+/* .logo_bg{
+    background-image: url("../assets/BoloToh_logo.svg");
+    background-repeat: no-repeat;
+    background-size: fill;
+    background-position: center;
+} */
