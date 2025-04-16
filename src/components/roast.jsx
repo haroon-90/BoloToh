@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './components.css';
-// import Main from './main';
 
-function PoemForm() {
+function roastform() {
     const apiKey = "AIzaSyAxuab6K_703XmpSqd4L_4tJggKALKB24c";
 
     async function run(type) {
@@ -25,19 +24,6 @@ function PoemForm() {
                 }]
             }]
         };
-
-        // // Check if conversation history exists in requestBody
-        // if (!requestBody.contents[0].parts[0].text.includes("Previous conversation:")) {
-        //     // Load conversation history from localStorage
-        //     const history = localStorage.getItem('conversationHistory') || '';
-
-        //     // Add history to the prompt
-        //     requestBody.contents[0].parts[0].text = `Previous conversation: ${history}\n\nNew question: ${requestBody.contents[0].parts[0].text}`;
-        // }
-
-        // // After getting response, store in history
-        // const newConversation = userInput + "\n" + (localStorage.getItem('conversationHistory') || '');
-        // localStorage.setItem('conversationHistory', newConversation.slice(0, 1000)); // Keep last 1000 characters
 
         const response = await fetch(url, {
             method: "POST",
@@ -90,7 +76,7 @@ function PoemForm() {
             <div className="flex min-h-[calc(100vh-152px)]">
                 <div className="glow max-w-3xl mx-auto p-6 h-auto bg-white rounded-4xl border-2 border-[#0044ff]">
                     <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">Tell Us abaout Yourself</h2>
-                    <p className="text-md mb-4 text-center text-gray-500">Craft personalized poems and stories with a touch of AI magic!</p>
+                    <p className="text-md mb-4 text-center text-gray-500">Craft personalized roast with a touch of AI magic!</p>
 
                     <form onSubmit={handleSubmit} className="flex flex-wrap justify-center">
                         <div className='flex flex-wrap gap-4 justify-center'>
@@ -186,24 +172,10 @@ function PoemForm() {
                         <div className='flex gap-2 items-center justify-center mt-4'>
                             <button
                                 type="submit"
-                                onClick={() => { run("poem") }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition mt-4"
-                            >
-                                Generate Poem ✨
-                            </button>
-                            <button
-                                type="submit"
-                                onClick={() => { run("Story") }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition mt-4"
-                            >
-                                Generate Story ✨
-                            </button>
-                            <button
-                                type="submit"
                                 onClick={() => { run("roast") }}
                                 className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition mt-4"
                             >
-                                Generate Roast ✨
+                                Generate roast ✨
                             </button>
                         </div>
                     </form>
@@ -229,4 +201,4 @@ function PoemForm() {
     );
 }
 
-export default PoemForm;
+export default roastform;
