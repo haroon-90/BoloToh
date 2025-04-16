@@ -21,7 +21,7 @@ const Navbar = () => {
     return (
         <nav className="flex flex-row items-center justify-between p-4 px-10 w-full bg-[#0044ff]">
             <div className="logo">
-                <img src="./assets/BoloToh.svg" alt="BoloToh Logo" className="h-8" />
+                <img src={`${import.meta.env.BASE_URL}BoloToh.svg`} alt="BoloToh Logo" className="h-8" />
             </div>
             <ul className="list flex space-x-6 text-blue-200">
                 <li>
