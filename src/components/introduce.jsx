@@ -65,7 +65,7 @@ const introduceform = () => {
     };
 
     return (
-        <div className="flex min-h-[calc(100vh-152px)] mx-10 my-3 gap-2">
+        <div className="min-h-[calc(100vh-152px)] px-4 py-3 gap-2 md:mx-10 flex flex-col md:flex-row">
             <div className="flex min-h-[calc(100vh-152px)]">
                 <div className="glow max-w-3xl mx-auto p-6 h-auto bg-white rounded-4xl border-2 border-[#0044ff]">
                     <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">Tell Us abaout Yourself</h2>
@@ -133,7 +133,7 @@ const introduceform = () => {
                     </form>
                 </div>
             </div>
-            <div className='glow p-6 bg-white rounded-4xl border-2 border-[#0044ff] w-lg'>
+            <div className='glow p-6 bg-white rounded-4xl border-2 border-[#0044ff] w-full md:w-lg'>
                 <article className='flex flex-col h-max justify-center'>
                     <pre
                         className='poem-container flex justify-center whitespace-pre-wrap break-words  flex-grow bg-gray-100 rounded-4xl p-4 mb-2 leading-10'

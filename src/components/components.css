@@ -43,6 +43,7 @@ nav {
             0 0 10px #ffffff,
             0 0 10px #ffffff;
     }
+
     to {
         box-shadow:
             0 0 5px #5b85fa,
@@ -54,29 +55,22 @@ nav {
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
-  }
-  
-  /* Track (background) */
-  ::-webkit-scrollbar-track {
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
     background: #ffffff;
-  }
-  
-  /* Handle (thumb/slider) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #0044ff; /* Your blue color */
+}
+
+/* Handle (thumb/slider) */
+::-webkit-scrollbar-thumb {
+    background-color: #0044ff;
+    /* Your blue color */
     border-radius: 10px;
     border: 2px solid #f1f1f1;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5a7af9;
-  }
-  
+}
 
-/* .logo_bg{
-    background-image: url("../assets/BoloToh_logo.svg");
-    background-repeat: no-repeat;
-    background-size: fill;
-    background-position: center;
-} */
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #5a7af9;
+}

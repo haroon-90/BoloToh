@@ -72,7 +72,7 @@ function storyform() {
     };
 
     return (
-        <div className="flex min-h-[calc(100vh-152px)] mx-10 my-3 gap-2">
+        <div className="flex flex-col md:flex-row min-h-[calc(100vh-152px)] mx-2 md:mx-10 my-3 gap-2">
             <div className="flex min-h-[calc(100vh-152px)]">
                 <div className="glow max-w-3xl mx-auto p-6 h-auto bg-white rounded-4xl border-2 border-[#0044ff]">
                     <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">Tell Us abaout Yourself</h2>
@@ -86,7 +86,6 @@ function storyform() {
                                 placeholder="Name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                // required
                             />
                             <input
                                 className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
@@ -94,7 +93,6 @@ function storyform() {
                                 placeholder="Age"
                                 value={formData.age}
                                 onChange={handleChange}
-                                // required
                             />
                             <input
                                 className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
@@ -102,7 +100,6 @@ function storyform() {
                                 placeholder="Favorite Color"
                                 value={formData.fvt_color}
                                 onChange={handleChange}
-                                // required
                             />
                             <input
                                 className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
@@ -110,7 +107,6 @@ function storyform() {
                                 placeholder="Hobby"
                                 value={formData.hobby}
                                 onChange={handleChange}
-                                // required
                             />
                             <input
                                 className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
@@ -118,7 +114,6 @@ function storyform() {
                                 placeholder="language"
                                 value={formData.language}
                                 onChange={handleChange}
-                                // required
                             />
                             <input
                                 className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
@@ -182,7 +177,7 @@ function storyform() {
                 </div>
             </div>
             {/* <Main className="flex-grow-2 bg-white p-6" /> */}
-            <div className='glow p-6 bg-white rounded-4xl border-2 border-[#0044ff] w-lg'>
+            <div className='glow p-6 bg-white rounded-4xl border-2 border-[#0044ff] w-full md:w-lg'>
                 <article className='flex flex-col h-max justify-center'>
                     <pre
                         className='poem-container flex justify-center whitespace-pre-wrap break-words  flex-grow bg-gray-100 rounded-4xl p-4 mb-2 leading-10'
