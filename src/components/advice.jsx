@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import React from 'react'
+import React from 'react';
+import { Lightbulb, Copy, Check, Loader2, Sparkles } from 'lucide-react';
 
 const AdviceForm = () => {
     const apiKey = "AIzaSyAxuab6K_703XmpSqd4L_4tJggKALKB24c";
     const [isLoading, setIsLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [isUrdu, setIsUrdu] = useState(false);
 
     async function run(type) {
         setIsLoading(true);
         const el = document.getElementById("poemhere");
-        if (el) el.innerText = "✨ Generating your AI advice... Please wait.";
+        if (el) el.innerText = "Generating your AI advice... Please wait.";
 
         try {
             const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey;
@@ -38,16 +40,18 @@ const AdviceForm = () => {
             });
 
             const data = await response.json();
-            console.log(data);
 
             if (data && data.candidates && data.candidates[0].content) {
-                if (el) el.innerText = data.candidates[0].content.parts[0].text;
-                console.log(data.candidates[0].content.parts[0].text);
+                const text = data.candidates[0].content.parts[0].text;
+                if (el) el.innerText = text;
+                setIsUrdu(/[\u0600-\u06FF]/.test(text));
             } else {
                 if (el) el.innerText = "Error: Unexpected response format.";
+                setIsUrdu(false);
             }
         } catch (error) {
             if (el) el.innerText = "Error: Failed to fetch response. Please try again.";
+            setIsUrdu(false);
         } finally {
             setIsLoading(false);
         }
@@ -70,7 +74,6 @@ const AdviceForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(JSON.stringify(formData));
     };
 
     const copyToClipboard = () => {
@@ -85,21 +88,23 @@ const AdviceForm = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full my-4">
             {/* Input Form Column */}
-            <div className="lg:col-span-7 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-1">
-                        <span className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-sm">💡</span>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Tell Us About Yourself</h2>
+                        <span className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-100">
+                            <Lightbulb className="w-5 h-5" />
+                        </span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Tell Us About Yourself</h2>
                     </div>
-                    <p className="text-sm text-gray-400">Craft personalized AI advice with a touch of AI magic!</p>
+                    <p className="text-sm text-slate-500">Craft personalized AI advice with a touch of AI magic!</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="sm:col-span-2">
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Topic</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Topic</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                                 name="topic"
                                 placeholder="e.g. Career decision / Time management"
                                 value={formData.topic}
@@ -107,9 +112,9 @@ const AdviceForm = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Current Feeling</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Current Feeling</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                                 name="currentfeeling"
                                 placeholder="e.g. Overwhelmed but excited"
                                 value={formData.currentfeeling}
@@ -117,9 +122,9 @@ const AdviceForm = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Language</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Language</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                                 name="language"
                                 placeholder="e.g. English / Urdu"
                                 value={formData.language}
@@ -127,14 +132,14 @@ const AdviceForm = () => {
                             />
                         </div>
                         <div className="sm:col-span-2">
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Mood / Tone</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Mood / Tone</label>
                             <select
                                 name="tone"
                                 value={formData.tone}
                                 onChange={handleChange}
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                             >
-                                <option value="funny">Friendly</option>
+                                <option value="friendly">Friendly</option>
                                 <option value="funny">Funny</option>
                                 <option value="roast">Roast</option>
                                 <option value="silly">Silly</option>
@@ -149,16 +154,17 @@ const AdviceForm = () => {
                             type="submit"
                             disabled={isLoading}
                             onClick={() => { run("AI advice") }}
-                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
+                            className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-6 rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer disabled:opacity-50"
                         >
                             {isLoading ? (
                                 <>
-                                    <span className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
                                     <span>Generating Advice...</span>
                                 </>
                             ) : (
                                 <>
-                                    <span>Generate AI advice ✨</span>
+                                    <Sparkles className="w-5 h-5" />
+                                    <span>Generate AI advice</span>
                                 </>
                             )}
                         </button>
@@ -167,37 +173,50 @@ const AdviceForm = () => {
             </div>
 
             {/* AI Output Result Area */}
-            <div className="lg:col-span-5 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between min-h-[420px]">
+            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between min-h-[420px]">
                 <div>
-                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">
+                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                             <span className="relative flex h-2.5 w-2.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600"></span>
                             </span>
-                            <h3 className="text-sm font-semibold text-gray-300">AI Advice Output</h3>
+                            <h3 className="text-sm font-semibold text-slate-800">AI Advice Output</h3>
                         </div>
                         <button
                             onClick={copyToClipboard}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-800/80 hover:bg-gray-700 hover:text-white rounded-lg border border-gray-700/60 transition cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-lg border border-slate-200 transition cursor-pointer"
                         >
-                            {copied ? '✓ Copied' : '📋 Copy Output'}
+                            {copied ? (
+                                <>
+                                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                    <span>Copied</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Copy Output</span>
+                                </>
+                            )}
                         </button>
                     </div>
 
-                    <div className="relative min-h-[250px] flex items-center justify-center p-4 bg-gray-950/60 border border-gray-800/80 rounded-2xl">
+                    <div className="relative min-h-[250px] flex items-center justify-center p-5 bg-slate-50 border border-slate-200/80 rounded-xl">
                         <pre
-                            className="poem-container w-full text-center text-gray-200 text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed font-sans"
+                            className={`poem-container w-full text-slate-800 text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed ${
+                                isUrdu ? 'font-urdu text-right' : 'font-sans text-center'
+                            }`}
                             id="poemhere"
+                            dir={isUrdu ? 'rtl' : 'ltr'}
                         >
                             Waiting for your command, the AI stands ready to weave words into wonders.
                         </pre>
                     </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-800/60 text-center">
-                    <p className="text-xs text-gray-500">
-                        ⚡ AI responses are dynamically generated and may vary.
+                <div className="mt-4 pt-4 border-t border-slate-100 text-center">
+                    <p className="text-xs text-slate-400">
+                        AI responses are dynamically generated and may vary.
                     </p>
                 </div>
             </div>
