@@ -1,43 +1,55 @@
 import { useState } from 'react';
 import React from 'react'
 
-const motivationForm = () => {
+const MotivationForm = () => {
     const apiKey = "AIzaSyAxuab6K_703XmpSqd4L_4tJggKALKB24c";
+    const [isLoading, setIsLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     async function run(type) {
-        const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+        setIsLoading(true);
+        const el = document.getElementById("poemhere");
+        if (el) el.innerText = "✨ Generating your motivational boost... Please wait.";
 
-        const requestBody = {
-            contents: [{
-                parts: [{
-                    text: `Create a creative and engaging ${type} about a person using the details from this object:
-                              ${JSON.stringify(formData)}
-                              Each key in the object represents a trait or property of the person, and its corresponding value should be used meaningfully in the ${type}.
-                              Additional rules:
-                              - The ${type} should be written in ${formData.language} language.
-                              - Do not include any explanation or translation.
-                              - If All detail are empty, then Just reply "Please Tell us about Yourself" in Different attractive ways.
-                              - reply as u directly talking to the user.`
+        try {
+            const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+
+            const requestBody = {
+                contents: [{
+                    parts: [{
+                        text: `Create a creative and engaging ${type} about a person using the details from this object:
+                                  ${JSON.stringify(formData)}
+                                  Each key in the object represents a trait or property of the person, and its corresponding value should be used meaningfully in the ${type}.
+                                  Additional rules:
+                                  - The ${type} should be written in ${formData.language} language.
+                                  - Do not include any explanation or translation.
+                                  - If All detail are empty, then Just reply "Please Tell us about Yourself" in Different attractive ways.
+                                  - reply as u directly talking to the user.`
+                    }]
                 }]
-            }]
-        };
+            };
 
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestBody)
-        });
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestBody)
+            });
 
-        const data = await response.json();
-        console.log(data);
+            const data = await response.json();
+            console.log(data);
 
-        if (data && data.candidates && data.candidates[0].content) {
-            document.getElementById("poemhere").innerText = data.candidates[0].content.parts[0].text;
-            console.log(data.candidates[0].content.parts[0].text)
-        } else {
-            document.getElementById("poemhere").innerText = "Error: Unexpected response format.";
+            if (data && data.candidates && data.candidates[0].content) {
+                if (el) el.innerText = data.candidates[0].content.parts[0].text;
+                console.log(data.candidates[0].content.parts[0].text);
+            } else {
+                if (el) el.innerText = "Error: Unexpected response format.";
+            }
+        } catch (error) {
+            if (el) el.innerText = "Error: Failed to fetch response. Please try again.";
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -63,84 +75,140 @@ const motivationForm = () => {
         // run("poem");
     };
 
-    return (
-        <div className="flex flex-col md:flex-row min-h-[calc(100vh-152px)] mx-2 md:mx-10 my-3 gap-2">
-            <div className="flex min-h-[calc(100vh-152px)]">
-                <div className="glow max-w-3xl mx-auto p-6 h-auto bg-white rounded-4xl border-2 border-[#0044ff]">
-                    <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">Tell Us about Yourself</h2>
-                    <p className="text-md mb-4 text-center text-gray-500">Craft personalized motivation with a touch of AI magic!</p>
+    const copyToClipboard = () => {
+        const el = document.getElementById("poemhere");
+        if (el && el.innerText) {
+            navigator.clipboard.writeText(el.innerText);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
 
-                    <form onSubmit={handleSubmit} className="flex flex-wrap justify-center">
-                        <div className='flex flex-wrap gap-4 justify-center'>
+    return (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full my-4">
+            {/* Input Form Column */}
+            <div className="lg:col-span-7 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl">
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-sm">🚀</span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-white">Tell Us About Yourself</h2>
+                    </div>
+                    <p className="text-sm text-gray-400">Craft personalized motivation with a touch of AI magic!</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Name</label>
                             <input
-                                className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
+                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 name="name"
-                                placeholder="Name"
+                                placeholder="e.g. Jordan"
                                 value={formData.name}
                                 onChange={handleChange}
-                            // required
                             />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Age</label>
                             <input
-                                className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
+                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 name="age"
-                                placeholder="Age"
+                                placeholder="e.g. 28"
                                 value={formData.age}
                                 onChange={handleChange}
-                            // required
                             />
+                        </div>
+                        <div className="sm:col-span-2">
+                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Goal</label>
                             <input
-                                className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
+                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 name="goal"
-                                placeholder="goal"
+                                placeholder="e.g. Launch my startup before summer"
                                 value={formData.goal}
                                 onChange={handleChange}
-                            // required
                             />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Language</label>
                             <input
-                                className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
+                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 name="language"
-                                placeholder="language"
+                                placeholder="e.g. English / Urdu"
                                 value={formData.language}
                                 onChange={handleChange}
-                            // required
                             />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">City / Country (optional)</label>
                             <input
-                                className="input flex-1 min-w-[200px] border-2 border-gray-300 rounded p-2 focus:border-[#0044ff] focus:outline-none"
+                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
                                 name="location"
-                                placeholder="City / Country (optional)"
+                                placeholder="e.g. Toronto"
                                 value={formData.location}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className='flex gap-2 items-center justify-center mt-4'>
-                            <button
-                                type="submit"
-                                onClick={() => { run("Motivation") }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition mt-4"
-                            >
-                                Generate Motivation ✨
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div className='glow p-6 bg-white rounded-4xl border-2 border-[#0044ff] w-full md:w-lg'>
-                <article className='flex flex-col h-max justify-center'>
-                    <pre
-                        className='poem-container flex justify-center whitespace-pre-wrap break-words  flex-grow bg-gray-100 rounded-4xl p-4 mb-2 leading-10'
-                        id='poemhere'
-                    >
-                        Waiting for your command, the AI stands ready to weave words into wonders.
-                    </pre>
-                    <div className="flex justify-center">
-                        <h6 className='text-gray-500 text-sm'>
-                            AI may produce unexpected or inaccurate results.
-                        </h6>
                     </div>
-                </article>
+
+                    <div className="pt-4">
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            onClick={() => { run("Motivation") }}
+                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-600/20 transition-all cursor-pointer disabled:opacity-50"
+                        >
+                            {isLoading ? (
+                                <>
+                                    <span className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                                    <span>Generating Motivation...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span>Generate Motivation ✨</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {/* AI Output Result Area */}
+            <div className="lg:col-span-5 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between min-h-[420px]">
+                <div>
+                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">
+                        <div className="flex items-center gap-2">
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+                            </span>
+                            <h3 className="text-sm font-semibold text-gray-300">AI Motivation Output</h3>
+                        </div>
+                        <button
+                            onClick={copyToClipboard}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-800/80 hover:bg-gray-700 hover:text-white rounded-lg border border-gray-700/60 transition cursor-pointer"
+                        >
+                            {copied ? '✓ Copied' : '📋 Copy Output'}
+                        </button>
+                    </div>
+
+                    <div className="relative min-h-[250px] flex items-center justify-center p-4 bg-gray-950/60 border border-gray-800/80 rounded-2xl">
+                        <pre
+                            className="poem-container w-full text-center text-gray-200 text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed font-sans"
+                            id="poemhere"
+                        >
+                            Waiting for your command, the AI stands ready to weave words into wonders.
+                        </pre>
+                    </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-gray-800/60 text-center">
+                    <p className="text-xs text-gray-500">
+                        ⚡ AI responses are dynamically generated and may vary.
+                    </p>
+                </div>
             </div>
         </div>
     );
 }
 
-export default motivationForm
+export default MotivationForm;

@@ -1,76 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu&display=swap');
 
 .poem-container {
     font-family: "Noto Nastaliq Urdu", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    line-gap-override: 5;
-    animation: appear 1s ease-in-out;
+    line-height: 2.2;
+    animation: appear 0.5s ease-out;
 }
 
 @keyframes appear {
     0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(12px);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-nav {
-    border-radius: 0 0 40px 40px;
-    outline: 2px solid #0044ff;
-    outline-offset: 5px;
+.glow-card {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.footer {
-    border-radius: 40px 40px 0 0;
-    outline: 2px solid #0044ff;
-    outline-offset: 5px;
+.glow-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(59, 130, 246, 0.1);
 }
 
-.glow {
-    animation: glow-animation 5s ease-in-out infinite alternate;
+.glow-subtle {
+    box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.2);
 }
 
-@keyframes glow-animation {
-    from {
-        box-shadow:
-            0 0 10px #ffffff,
-            0 0 10px #ffffff;
-    }
-
-    to {
-        box-shadow:
-            0 0 5px #5b85fa,
-            0 0 5px #5b85fa
-    }
-}
-
-/* Scrollbar width */
+/* Dark theme scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
 }
 
-/* Track (background) */
 ::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: #0b0f17;
 }
 
-/* Handle (thumb/slider) */
 ::-webkit-scrollbar-thumb {
-    background-color: #0044ff;
-    /* Your blue color */
-    border-radius: 10px;
-    border: 2px solid #f1f1f1;
+    background-color: #1e293b;
+    border-radius: 9999px;
+    border: 2px solid #0b0f17;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #5a7af9;
+    background-color: #3b82f6;
 }
