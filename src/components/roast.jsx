@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { Flame, Copy, Check, Loader2, Sparkles } from 'lucide-react';
 import './components.css';
 
 function RoastForm() {
     const apiKey = "AIzaSyAxuab6K_703XmpSqd4L_4tJggKALKB24c";
     const [isLoading, setIsLoading] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [isUrdu, setIsUrdu] = useState(false);
 
     async function run(type) {
         setIsLoading(true);
         const el = document.getElementById("poemhere");
-        if (el) el.innerText = "🔥 Generating your roast... Prepare yourself!";
+        if (el) el.innerText = "Generating your roast... Prepare yourself!";
 
         try {
             const url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" + apiKey;
@@ -41,16 +43,18 @@ function RoastForm() {
             });
 
             const data = await response.json();
-            console.log(data);
 
             if (data && data.candidates && data.candidates[0].content) {
-                if (el) el.innerText = data.candidates[0].content.parts[0].text;
-                console.log(data.candidates[0].content.parts[0].text);
+                const text = data.candidates[0].content.parts[0].text;
+                if (el) el.innerText = text;
+                setIsUrdu(/[\u0600-\u06FF]/.test(text));
             } else {
                 if (el) el.innerText = "Error: Unexpected response format.";
+                setIsUrdu(false);
             }
         } catch (error) {
             if (el) el.innerText = "Error: Failed to fetch response. Please try again.";
+            setIsUrdu(false);
         } finally {
             setIsLoading(false);
         }
@@ -79,8 +83,6 @@ function RoastForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(JSON.stringify(formData));
-        // run("poem");
     };
 
     const copyToClipboard = () => {
@@ -95,21 +97,23 @@ function RoastForm() {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full my-4">
             {/* Input Form Column */}
-            <div className="lg:col-span-7 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-1">
-                        <span className="p-1.5 rounded-lg bg-red-500/10 text-red-400 text-sm">🔥</span>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Tell Us About Yourself</h2>
+                        <span className="p-2 rounded-xl bg-amber-50 text-amber-600 border border-amber-100">
+                            <Flame className="w-5 h-5" />
+                        </span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Tell Us About Yourself</h2>
                     </div>
-                    <p className="text-sm text-gray-400">Craft personalized roast with a touch of AI magic!</p>
+                    <p className="text-sm text-slate-500">Craft personalized roast with a touch of AI magic!</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Name</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Name</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="name"
                                 placeholder="e.g. Robin"
                                 value={formData.name}
@@ -117,9 +121,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Age</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Age</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="age"
                                 placeholder="e.g. 29"
                                 value={formData.age}
@@ -127,9 +131,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Favorite Color</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Favorite Color</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="fvt_color"
                                 placeholder="e.g. Neon Pink"
                                 value={formData.fvt_color}
@@ -137,9 +141,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Hobby</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Hobby</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="hobby"
                                 placeholder="e.g. Karaoke in shower"
                                 value={formData.hobby}
@@ -147,9 +151,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Language</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Language</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="language"
                                 placeholder="e.g. English / Urdu"
                                 value={formData.language}
@@ -157,9 +161,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Favorite Animal (optional)</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Favorite Animal (optional)</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="fvt_animal"
                                 placeholder="e.g. Sloth"
                                 value={formData.fvt_animal}
@@ -167,9 +171,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">City / Country (optional)</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">City / Country (optional)</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="location"
                                 placeholder="e.g. Chicago"
                                 value={formData.location}
@@ -177,9 +181,9 @@ function RoastForm() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">One Weird Thing</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">One Weird Thing</label>
                             <input
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                                 name="weirdThing"
                                 placeholder="e.g. Laughs at own jokes first"
                                 value={formData.weirdThing}
@@ -190,12 +194,12 @@ function RoastForm() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <div>
-                            <label className="block text-xs font-semibold text-gray-400 mb-1.5">Mood</label>
+                            <label className="block text-xs font-semibold text-slate-600 mb-1.5">Mood</label>
                             <select
                                 name="mood"
                                 value={formData.mood}
                                 onChange={handleChange}
-                                className="w-full bg-gray-950/80 border border-gray-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition"
                             >
                                 <option value="funny">Funny</option>
                                 <option value="roast">Roast</option>
@@ -205,14 +209,14 @@ function RoastForm() {
                             </select>
                         </div>
 
-                        <div className="flex items-center pt-5">
-                            <label className="relative flex items-center gap-3 cursor-pointer select-none text-sm text-gray-300">
+                        <div className="flex items-center sm:pt-6">
+                            <label className="relative flex items-center gap-2.5 cursor-pointer select-none text-sm font-medium text-slate-700">
                                 <input
                                     type="checkbox"
                                     name="is_random"
                                     checked={formData.is_random}
                                     onChange={handleChange}
-                                    className="w-4 h-4 rounded bg-gray-950 border-gray-800 text-blue-600 focus:ring-blue-500 focus:ring-offset-gray-900"
+                                    className="w-4 h-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500 focus:ring-offset-0"
                                 />
                                 <span>Make it completely random?</span>
                             </label>
@@ -224,16 +228,17 @@ function RoastForm() {
                             type="submit"
                             disabled={isLoading}
                             onClick={() => { run("roast") }}
-                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-red-600/20 transition-all cursor-pointer disabled:opacity-50"
+                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-700 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md shadow-amber-500/20 transition-all cursor-pointer disabled:opacity-50"
                         >
                             {isLoading ? (
                                 <>
-                                    <span className="inline-block animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
                                     <span>Generating Roast...</span>
                                 </>
                             ) : (
                                 <>
-                                    <span>Generate Roast 🔥</span>
+                                    <Sparkles className="w-5 h-5" />
+                                    <span>Generate Roast</span>
                                 </>
                             )}
                         </button>
@@ -242,37 +247,50 @@ function RoastForm() {
             </div>
 
             {/* AI Output Result Area */}
-            <div className="lg:col-span-5 bg-gray-900/60 border border-gray-800/80 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl flex flex-col justify-between min-h-[460px]">
+            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between min-h-[460px]">
                 <div>
-                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">
+                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                             <span className="relative flex h-2.5 w-2.5">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-600"></span>
                             </span>
-                            <h3 className="text-sm font-semibold text-gray-300">AI Roast Output</h3>
+                            <h3 className="text-sm font-semibold text-slate-800">AI Roast Output</h3>
                         </div>
                         <button
                             onClick={copyToClipboard}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-800/80 hover:bg-gray-700 hover:text-white rounded-lg border border-gray-700/60 transition cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-lg border border-slate-200 transition cursor-pointer"
                         >
-                            {copied ? '✓ Copied' : '📋 Copy Output'}
+                            {copied ? (
+                                <>
+                                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                    <span>Copied</span>
+                                </>
+                            ) : (
+                                <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Copy Output</span>
+                                </>
+                            )}
                         </button>
                     </div>
 
-                    <div className="relative min-h-[280px] flex items-center justify-center p-4 bg-gray-950/60 border border-gray-800/80 rounded-2xl">
+                    <div className="relative min-h-[280px] flex items-center justify-center p-5 bg-slate-50 border border-slate-200/80 rounded-xl">
                         <pre
-                            className="poem-container w-full text-center text-gray-200 text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed font-sans"
+                            className={`poem-container w-full text-slate-800 text-base sm:text-lg whitespace-pre-wrap break-words leading-relaxed ${
+                                isUrdu ? 'font-urdu text-right' : 'font-sans text-center'
+                            }`}
                             id="poemhere"
+                            dir={isUrdu ? 'rtl' : 'ltr'}
                         >
                             Waiting for your command, the AI stands ready to weave words into wonders.
                         </pre>
                     </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-800/60 text-center">
-                    <p className="text-xs text-gray-500">
-                        ⚡ AI responses are dynamically generated and may vary.
+                <div className="mt-4 pt-4 border-t border-slate-100 text-center">
+                    <p className="text-xs text-slate-400">
+                        AI responses are dynamically generated and may vary.
                     </p>
                 </div>
             </div>
