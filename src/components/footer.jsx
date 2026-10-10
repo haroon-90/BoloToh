@@ -8,7 +8,7 @@ const footer = () => {
                     <img
                         src={`${import.meta.env.BASE_URL}BoloToh_icon_logo.svg`}
                         alt="BoloToh Icon"
-                        className="h-7 w-auto object-contain"
+                        className="invert h-7 w-auto object-contain"
                     />
                     <div className="text-slate-500 text-xs sm:text-sm font-medium">
                         &copy; 2025 | Tech Dastak | All rights reserved

@@ -17,7 +17,7 @@ const Navbar = () => {
                         <img
                             src={`${import.meta.env.BASE_URL}BoloToh_icon_logo.svg`}
                             alt="BoloToh Logo"
-                            className="h-8 w-8 object-contain transition-transform group-hover:scale-105"
+                            className="invert h-8 w-8 object-contain transition-transform group-hover:scale-105"
                         />
                         <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 bg-clip-text text-transparent">
                             BoloToh
